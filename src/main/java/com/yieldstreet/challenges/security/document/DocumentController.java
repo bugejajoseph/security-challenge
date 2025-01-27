@@ -55,8 +55,12 @@ public class DocumentController {
     }
 
     @GetMapping("/documents")
-    public List<DocumentSummary> find() {
-        throw new UnsupportedOperationException("not implemented yet");
+    public List<DocumentSummary> find(@CookieValue("session_id") String sessionId) {
+        // Authenticate user and get their ID
+        UUID userId = sessionHelper.authenticate(sessionId);
+        
+        // Get documents for authenticated user
+        return documentDao.findByUserId(userId.toString());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
